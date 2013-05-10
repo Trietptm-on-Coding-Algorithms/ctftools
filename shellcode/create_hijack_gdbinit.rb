@@ -4,7 +4,7 @@
 # not have write access to
 
 if(ARGV.length != 3)
-  $stderr.puts("Usage: create_hijack_gdbint.rb <shellcode> <program> <address to make the change>")
+  $stderr.puts("Usage: create_hijack_gdbint.rb <shellcode.bin> <program> <address to make the change>")
   exit(1)
 end
 
