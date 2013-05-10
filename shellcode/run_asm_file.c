@@ -5,8 +5,8 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-#define NASM_COMMAND "nasm -o tmp_shell %s"
-#define NASM_COMMAND2 "rm tmp_shell"
+#define FILENAME "tmp_shell"
+#define NASM_COMMAND "nasm -o "FILENAME" %s"
 
 int main(int argc, char *argv[]){
   if(argc != 2)
@@ -29,14 +29,14 @@ int main(int argc, char *argv[]){
 
   /* Allocate some executable memory */
   void * a = mmap(0, statbuf.st_size, PROT_EXEC |PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0);
-  printf("allocated %d bytes of executable memory at: %p\n", statbuf.st_size, a);
+  printf("allocated %zd bytes of executable memory at: %p\n", statbuf.st_size, a);
 
   /* Read the new file into the memory */
-  FILE *file = fopen(argv[1], "rb");
+  FILE *file = fopen(FILENAME, "rb");
   read(fileno(file), a, statbuf.st_size);
 
   /* Delete the file */
-  system(NASM_COMMAND2);
+  system("rm "FILENAME);
 
   /* Run the code */
   ((void (*)(void)) a)();
